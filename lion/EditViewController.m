@@ -93,8 +93,8 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cellText = [NSString stringWithFormat:@"%@ Activity Notes",[cell.textLabel.text substringWithRange:NSMakeRange(5, 2)]];
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cellText = [NSString stringWithFormat:@"%02d Activity Notes",indexPath.row + 1];
 //    NSLog(@"cell value: %@",cellText);
 //    NSLog(@"activity Notes: %@", thisObservation.activityNotes[cellText]);
     [self.notes setText:thisObservation.activityNotes[cellText]];
