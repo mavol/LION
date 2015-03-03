@@ -12,6 +12,7 @@
     ObservationData *thisObservation;
     NSMutableArray *activities;
     NSString *cellText;
+    int tableTouchCount;
 }
 @property (weak, nonatomic) IBOutlet UITextView *notes;
 @property (weak, nonatomic) IBOutlet UITextView *prereviewSummary;
@@ -28,13 +29,17 @@
     if (self.prereviewSummary.text.length < 4) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"You must write a pre-review summary before proceeding." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [alert show];
-    }
-    [self save];
+        if (tableTouchCount > 0) {
+            [self autoSaveActivityNotes];
+        }
+    }else {
+        if (tableTouchCount > 0) {
+            [self autoSaveActivityNotes];
+        }else{
+            [self save];
+        }
     [self performSegueWithIdentifier:@"editToObservationReview" sender:self];
-}
-- (IBAction)saveChanges:(id)sender {
-    thisObservation.activityNotes[cellText] = self.notes.text;
-    [self save];
+    }
 }
 
 - (void) save {
@@ -56,10 +61,13 @@
 //touching outside any text box dismisses keyboard
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
+    thisObservation.activityNotes[cellText] = self.notes.text;
+    [self save];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    tableTouchCount = 0;
     // Do any additional setup after loading the view.
     thisObservation = self.passingObservations[self.passingObservation];
     NSMutableArray *tempActivities = [[NSMutableArray alloc] init];
@@ -92,12 +100,19 @@
     return thisObservation.events.count / 2;
 }
 
+-(void)autoSaveActivityNotes {
+    thisObservation.activityNotes[cellText] = self.notes.text;
+    [self save];
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (tableTouchCount > 0) {
+        [self autoSaveActivityNotes];
+    }
+    tableTouchCount = tableTouchCount + 1;
     cellText = [NSString stringWithFormat:@"%02d Activity Notes",indexPath.row + 1];
-//    NSLog(@"cell value: %@",cellText);
-//    NSLog(@"activity Notes: %@", thisObservation.activityNotes[cellText]);
     [self.notes setText:thisObservation.activityNotes[cellText]];
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

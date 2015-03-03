@@ -20,6 +20,7 @@
     NSMutableDictionary *allDimASwitches;
     NSMutableDictionary *allDimBSwitches;
     NSMutableDictionary *allDimCSwitches;
+    NSMutableDictionary *allOtherSwitches;
     ObservationData *currentObservation;
     int activityStartCount;
 //    int toggleTOCount;
@@ -140,6 +141,10 @@
     [self.transitioningTimerHours setText:@"00:"];
     [self.transitioning setText:@""];
     
+    for (NSString *flip in allOtherSwitches) {
+        UISwitch *value = [allOtherSwitches objectForKey:flip];
+        value.enabled = YES;
+    }
     for (NSString *flip in allDimASwitches) {
         UISwitch *value = [allDimASwitches objectForKey:flip];
         value.enabled = YES;
@@ -298,6 +303,12 @@
     allDimASwitches = [[NSMutableDictionary alloc] init];
     allDimBSwitches = [[NSMutableDictionary alloc] init];
     allDimCSwitches = [[NSMutableDictionary alloc] init];
+    allOtherSwitches = [[NSMutableDictionary alloc] init];
+    
+    [allOtherSwitches setObject:self.startingGoalSwitch forKey:@"startGoal"];
+    [allOtherSwitches setObject:self.endingGoalSwitch forKey:@"endGoal"];
+    [allOtherSwitches setObject:self.endingGoalMode forKey:@"endGoalMode"];
+    [allOtherSwitches setObject:self.startingGoalMode forKey:@"startingGoalMode"];
     
     [allDimASwitches setObject:dimA1 forKey:self.dimA1Value.text];
     [allDimASwitches setObject:dimA2 forKey:self.dimA2Value.text];
@@ -341,6 +352,10 @@
     [allDimCSwitches setObject:dimC20 forKey:self.dimC20V.text];
     [allDimCSwitches setObject:dimC21 forKey:self.dimC21OtherV.text];
     
+    for (NSString *flip in allOtherSwitches) {
+        UISwitch *value = [allOtherSwitches objectForKey:flip];
+        value.enabled = NO;
+    }
     for (NSString *flip in allDimASwitches) {
         UISwitch *value = [allDimASwitches objectForKey:flip];
         value.enabled = NO;

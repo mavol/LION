@@ -92,6 +92,10 @@
 - (IBAction)done:(id)sender {
     if (thisObservation.postreviewSummary) {
         [self performSegueWithIdentifier:@"observationReviewToDistrict" sender:self];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"First you must update summary statement and rating after having viewed the observation data." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        [alert show];
+        [self editSummaryAndRating:sender];
     }
 }
 
