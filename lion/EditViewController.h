@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "ObservationPanelViewController.h"
 #import "ObservationData.h"
+#import "CustomScrollView.h"
 
 
 
-@interface EditViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface EditViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate>
 
 //What am I getting passed?
 @property (nonatomic) NSString *passingSchool;

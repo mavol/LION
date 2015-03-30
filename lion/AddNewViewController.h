@@ -12,7 +12,8 @@
 #import "DistrictTableViewController.h"
 
 
-@interface AddNewViewController : UIViewController <UITextFieldDelegate>
+
+@interface AddNewViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 //What am I getting passed?
 @property (nonatomic) NSString * passingDistrict;

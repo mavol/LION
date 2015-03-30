@@ -11,65 +11,73 @@
 
 @interface ObservationPanelViewController ()
 {
-//    NSMutableDictionary *observationDataMDict;
+
     NSMutableArray *eventsMArray;
     NSMutableString *combinedName;
     NSMutableDictionary *activitiesMDict;
     NSMutableDictionary *allActivitiesMDict;
     NSMutableDictionary *activityNotesMDict;
-    NSMutableDictionary *allDimASwitches;
-    NSMutableDictionary *allDimBSwitches;
-    NSMutableDictionary *allDimCSwitches;
-    NSMutableDictionary *allOtherSwitches;
+    NSMutableArray *allDimASwitches;
+    NSArray *allDimATitles;
+    NSMutableArray *allDimBSwitches;
+    NSArray *allDimBTitles;
+    NSMutableArray *allDimCSwitches;
+    NSArray *allDimCTitles;
     ObservationData *currentObservation;
     int activityStartCount;
-//    int toggleTOCount;
     NSTimer *aTimer;
     NSTimer *labelTimer;
-    UIImage *anim;
-    IBOutlet UISwitch *dimA1;
-    IBOutlet UISwitch *dimA2;
-    IBOutlet UISwitch *dimA3;
-    IBOutlet UISwitch *dimA4;
-    IBOutlet UISwitch *dimA5;
-    IBOutlet UISwitch *dimA6;
-    IBOutlet UISwitch *dimA7;
-    IBOutlet UISwitch *dimA8;
-    IBOutlet UISwitch *dimA9;
-    IBOutlet UISwitch *dimA10;
-    IBOutlet UISwitch *dimA11;
-    IBOutlet UISwitch *dimA12;
-    
-    IBOutlet UISwitch *dimB1;
-    IBOutlet UISwitch *dimB2;
-    IBOutlet UISwitch *dimB3;
-    IBOutlet UISwitch *dimB4;
-    IBOutlet UISwitch *dimB5;
-    IBOutlet UISwitch *dimB6;
 
-    IBOutlet UISwitch *dimC1;
-    IBOutlet UISwitch *dimC2;
-    IBOutlet UISwitch *dimC3;
-    IBOutlet UISwitch *dimC4;
-    IBOutlet UISwitch *dimC5;
-    IBOutlet UISwitch *dimC6;
-    IBOutlet UISwitch *dimC7;
-    IBOutlet UISwitch *dimC8;
-    IBOutlet UISwitch *dimC9;
-    IBOutlet UISwitch *dimC10;
-    IBOutlet UISwitch *dimC11;
-    IBOutlet UISwitch *dimC12;
-    IBOutlet UISwitch *dimC13;
-    IBOutlet UISwitch *dimC14;
-    IBOutlet UISwitch *dimC15;
-    IBOutlet UISwitch *dimC16;
-    IBOutlet UISwitch *dimC17;
-    IBOutlet UISwitch *dimC18;
-    IBOutlet UISwitch *dimC19;
-    IBOutlet UISwitch *dimC20;
-    IBOutlet UISwitch *dimC21;
+    IBOutlet UIButton *dimA1;
+    IBOutlet UIButton *dimA2;
+    IBOutlet UIButton *dimA3;
+    IBOutlet UIButton *dimA4;
+    IBOutlet UIButton *dimA5;
+    IBOutlet UIButton *dimA6;
+    IBOutlet UIButton *dimA7;
+    IBOutlet UIButton *dimA8;
+    IBOutlet UIButton *dimA9;
+    IBOutlet UIButton *dimA10;
+    IBOutlet UIButton *dimA11;
+    IBOutlet UIButton *dimA12;
     
-    IBOutlet UISegmentedControl *toggleTO;
+    IBOutlet UIButton *dimB1;
+    IBOutlet UIButton *dimB2;
+    IBOutlet UIButton *dimB3;
+    IBOutlet UIButton *dimB4;
+    IBOutlet UIButton *dimB5;
+    IBOutlet UIButton *dimB6;
+
+    IBOutlet UIButton *dimC1;
+    IBOutlet UIButton *dimC2;
+    IBOutlet UIButton *dimC3;
+    IBOutlet UIButton *dimC4;
+    IBOutlet UIButton *dimC5;
+    IBOutlet UIButton *dimC6;
+    IBOutlet UIButton *dimC7;
+    IBOutlet UIButton *dimC8;
+    IBOutlet UIButton *dimC9;
+    IBOutlet UIButton *dimC10;
+    IBOutlet UIButton *dimC11;
+    IBOutlet UIButton *dimC12;
+    IBOutlet UIButton *dimC13;
+    IBOutlet UIButton *dimC14;
+    IBOutlet UIButton *dimC15;
+    IBOutlet UIButton *dimC16;
+    IBOutlet UIButton *dimC17;
+    IBOutlet UIButton *dimC18;
+    IBOutlet UIButton *dimC19;
+    IBOutlet UIButton *dimC20;
+    IBOutlet UIButton *dimC21;
+    
+    IBOutlet UIButton *startingGoalStated;
+    IBOutlet UIButton *startingGoalWritten;
+    IBOutlet UIButton *endingGoalStated;
+    IBOutlet UIButton *endingGoalWritten;
+    
+    IBOutlet UIButton *startButton;
+    IBOutlet UIButton *endObservationButton;
+
     
 }
 
@@ -79,219 +87,503 @@
 @property (nonatomic) IBOutlet UILabel *transitioningTimerMinutes;
 @property (nonatomic) IBOutlet UILabel *transitioningTimerHours;
 @property (nonatomic) IBOutlet UILabel *transitioning;
-@property (weak, nonatomic) IBOutlet UIImageView *activityTimerAnimate;
-@property (weak, nonatomic) IBOutlet UISwitch *startingGoalSwitch;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *startingGoalMode;
-@property (weak, nonatomic) IBOutlet UISwitch *endingGoalSwitch;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *endingGoalMode;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *toggleTOValue;
-@property (weak, nonatomic) IBOutlet UILabel *dimA1Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA2Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA3Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA4Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA5Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA6Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA7Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA8Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA9Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA10Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA11Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimA12Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimB1Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimB2Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimB3Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimB4Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimB5Value;
-@property (weak, nonatomic) IBOutlet UILabel *dimB6OtherValue;
-@property (weak, nonatomic) IBOutlet UILabel *dimC1V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC2V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC3V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC4V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC5V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC6V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC7V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC8V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC9V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC10V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC11V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC12V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC13V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC14V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC15V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC16V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC17V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC18V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC19V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC20V;
-@property (weak, nonatomic) IBOutlet UILabel *dimC21OtherV;
 
 @end
 
 @implementation ObservationPanelViewController
 
-- (IBAction)newActivity:(id)sender {
-    [self.activityTimerAnimate setImage:anim];
-    activityStartCount = activityStartCount + 1;
-    NSDate *activityStart = [NSDate date];
-    [eventsMArray addObject:activityStart];
-    [self.transitioningTimerSeconds setFont: [UIFont systemFontOfSize:45]];
-    aTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerCountSeconds:) userInfo:nil repeats:YES];
-    [self.transitioningTimerSeconds setText:@"00"];
-    [self.transitioningTimerMinutes setText:@"00"];
-    [self.transitioningTimerHours setText:@"00:"];
-    [self.transitioning setText:@""];
-    
-    for (NSString *flip in allOtherSwitches) {
-        UISwitch *value = [allOtherSwitches objectForKey:flip];
-        value.enabled = YES;
-    }
-    for (NSString *flip in allDimASwitches) {
-        UISwitch *value = [allDimASwitches objectForKey:flip];
-        value.enabled = YES;
-    }
-    for (UISwitch *flip in allDimBSwitches) {
-        UISwitch *value = [allDimBSwitches objectForKey:flip];
-        value.enabled = YES;
-    }
-    for (UISwitch *flip in allDimCSwitches) {
-        UISwitch *value = [allDimCSwitches objectForKey:flip];
-        value.enabled = YES;
+-(void)dimATouched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+        [endObservationButton setImage:[UIImage imageNamed:@"endObsActive.png"] forState:UIControlStateNormal];
+    }else {
+        for (UIButton *x in allDimASwitches) {
+            x.selected = NO;
+        }
+        btn.selected = YES;
+        int both = 0;
+        for (UIButton *x in allDimBSwitches) {
+            if (x.selected == YES) {
+                both = 1;
+            }
+        }
+        if (both == 1) {
+            endObservationButton.enabled = YES;
+            [endObservationButton setImage:[UIImage imageNamed:@"newEvent.png"] forState:UIControlStateNormal];
+        }
     }
 }
-- (IBAction)endActivity:(id)sender {
-    if (aTimer) {
-        NSMutableArray *multiSelectionA = [[NSMutableArray alloc] init];
+
+-(void)dimBTouched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if (btn.selected == YES) {
+        btn.selected = NO;
+        [endObservationButton setImage:[UIImage imageNamed:@"endObsActive.png"] forState:UIControlStateNormal];
+    }else {
+        for (UIButton *x in allDimBSwitches) {
+            x.selected = NO;
+        }
+        btn.selected = YES;
+        int both = 0;
+        for (UIButton *x in allDimASwitches) {
+            if (x.selected == YES) {
+                both = 1;
+            }
+        }
+        if (both == 1) {
+            endObservationButton.enabled = YES;
+            [endObservationButton setImage:[UIImage imageNamed:@"newEvent.png"] forState:UIControlStateNormal];
+        }
+    }
+}
+
+
+- (IBAction)dimA1Touched:(id)sender {
+    [self dimATouched:sender];
+    }
+- (IBAction)dimA2Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA3Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA4Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA5Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA6Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA7Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA8Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA9Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA10Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA11Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimA12Touched:(id)sender {
+    [self dimATouched:sender];
+}
+- (IBAction)dimB1Touched:(id)sender {
+    [self dimBTouched:sender];
+}
+- (IBAction)dimB2Touched:(id)sender {
+    [self dimBTouched:sender];
+}
+- (IBAction)dimB3Touched:(id)sender {
+    [self dimBTouched:sender];
+}
+- (IBAction)dimB4Touched:(id)sender {
+    [self dimBTouched:sender];
+}
+- (IBAction)dimB5Touched:(id)sender {
+    [self dimBTouched:sender];
+}
+- (IBAction)dimB6Touched:(id)sender {
+    [self dimBTouched:sender];
+}
+- (IBAction)dimC1Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+    btn.selected = YES;
+    }
+}
+- (IBAction)dimC2Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC3Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC4Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC5Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC6Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC7Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC8Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC9Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC10Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC11Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC12Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC13Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC14Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC15Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC16Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC17Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC18Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC19Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC20Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)dimC21Touched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)startGoalStatedTouched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)startGoalWrittenTouched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)endGoalStatedTouched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)endGoalWrittenTouched:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    if ([btn isSelected]) {
+        btn.selected = NO;
+    }else{
+        btn.selected = YES;
+    }
+}
+- (IBAction)newActivity:(id)sender {
+    if (activityStartCount == 0) {
+        for (UIButton *x in allDimASwitches) {
+            x.enabled = YES;
+        }
+        for (UIButton *x in allDimBSwitches) {
+            x.enabled = YES;
+        }
+        for (UIButton *x in allDimCSwitches) {
+            x.enabled = YES;
+        }
+        startingGoalWritten.enabled = YES;
+        startingGoalStated.enabled = YES;
+        endingGoalWritten.enabled = YES;
+        endingGoalStated.enabled = YES;
+        [startButton setImage:[UIImage imageNamed:@"timerBlank.png"] forState:UIControlStateNormal];
+        [self startTimer];
+        NSDate *activityStop = [NSDate date];
+        [eventsMArray addObject:activityStop];
+    }
+
+    
+    if (activityStartCount > 0) {
         NSString *keyA = [NSString stringWithFormat:@"DimA %02d", activityStartCount];
-        for (NSString *flip in allDimASwitches) {
-            UISwitch *value = [allDimASwitches objectForKey:flip];
-            if ([value isOn] == 1) {
-                [multiSelectionA addObject:flip];
+        NSMutableArray *multiSelectionA = [[NSMutableArray alloc] init];
+        for (UIButton *x in allDimASwitches) {
+            int location = [allDimASwitches indexOfObject:x];
+            if ([x isSelected]) {
+                [multiSelectionA addObject:allDimATitles[location]];
+            }
+            if (multiSelectionA.count > 0) {
+                [activitiesMDict setObject:multiSelectionA forKey:keyA];
             }
         }
-        [activitiesMDict setObject:multiSelectionA forKey:keyA];
+        
+        NSString *keyB = [NSString stringWithFormat:@"DimB %02d",activityStartCount];
         NSMutableArray *multiSelectionB = [[NSMutableArray alloc] init];
-        NSString *keyB = [NSString stringWithFormat:@"DimB %02d", activityStartCount];
-        for (NSString *flip in allDimBSwitches) {
-            UISwitch *value = [allDimBSwitches objectForKey:flip];
-            if ([value isOn] == 1) {
-                [multiSelectionB addObject:flip];
+        for (UIButton *x in allDimBSwitches) {
+            int location = [allDimBSwitches indexOfObject:x];
+            if ([x isSelected]) {
+                [multiSelectionB addObject:allDimBTitles[location]];
+            }
+            if (multiSelectionB.count > 0) {
+                [activitiesMDict setObject:multiSelectionB forKey:keyB];
             }
         }
-        if (multiSelectionB.count > 0) {
-            [activitiesMDict setObject:multiSelectionB forKey:keyB];
-        }
+        
+        
         NSString *keyC = [NSString stringWithFormat:@"DimC %02d", activityStartCount];
         NSMutableArray *multiSelectionC = [[NSMutableArray alloc] init];
-        for (NSString *flip in allDimCSwitches) {
-            UISwitch *value = [allDimCSwitches objectForKey:flip];
-            if ([value isOn] == 1) {
-                [multiSelectionC addObject:flip];
+        for (UIButton *x in allDimCSwitches) {
+            int location = [allDimCSwitches indexOfObject:x];
+            if ([x isSelected]) {
+                [multiSelectionC addObject:allDimCTitles[location]];
             }
         }
         if (multiSelectionC.count > 0) {
             [activitiesMDict setObject:multiSelectionC forKey:keyC];
         }
         
-//        [allActivitiesMDict setObject:activitiesMDict forKey:[NSString stringWithFormat:@"%02d", activityStartCount]];
         NSString *checkKey = [NSString stringWithFormat:@"DimA %02d", activityStartCount];
-        if (activitiesMDict[checkKey]) {
-            UIImage *stillImage = [UIImage imageNamed:@"tbg051.png"];
-            [self.activityTimerAnimate setImage:stillImage];
-            [aTimer invalidate];
-            aTimer = nil;
-            [self.transitioning setText:@"Activity Saved"];
-            labelTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(hideLabel:) userInfo:nil repeats:NO];
-            NSDate *activityStop = [NSDate date];
-            NSString *notesKey = [NSString stringWithFormat:@"%02d Activity Notes",activityStartCount];
-            NSString *startingGoalValue = [NSString stringWithFormat:@"%d",self.startingGoalSwitch.isOn];
-            NSString *startingGoalKey = [NSString stringWithFormat:@"%02d Starting Goal",activityStartCount];
-            NSUInteger startingSegmentIndex = self.startingGoalMode.selectedSegmentIndex;
-            NSUInteger endingSegmentIndex = self.endingGoalMode.selectedSegmentIndex;
-            NSString *startingGoalModeValue = [NSString stringWithFormat:@"%lu",(unsigned long)startingSegmentIndex];
-            NSString *startingGoalModeKey = [NSString stringWithFormat:@"%02d Starting Goal Mode",activityStartCount];
-            NSString *endingGoalValue = [NSString stringWithFormat:@"%d",self.endingGoalSwitch.isOn];
-            NSString *endingGoalKey = [NSString stringWithFormat:@"%02d Ending Goal",activityStartCount];
-            NSString *endingGoalModeValue = [NSString stringWithFormat:@"%lu",(unsigned long)endingSegmentIndex];
-            
-            NSString *endingGoalModeKey = [NSString stringWithFormat:@"%02d Ending Goal Mode",activityStartCount];
-            [eventsMArray addObject:activityStop];
-            [self.transitioningTimerSeconds setText:@""];
-            [self.transitioningTimerMinutes setText:@""];
-            [self.transitioningTimerHours setText:@""];
-            [activityNotesMDict setObject:self.activityNotes.text forKey:notesKey];
-            [activityNotesMDict setObject:startingGoalValue forKey:startingGoalKey];
-            [activityNotesMDict setObject:startingGoalModeValue forKey:startingGoalModeKey];
-            [activityNotesMDict setObject:endingGoalValue forKey:endingGoalKey];
-            [activityNotesMDict setObject: endingGoalModeValue forKey:endingGoalModeKey];
-            
-            for (UISwitch *flip in allDimASwitches) {
-                UISwitch *value = [allDimASwitches objectForKey:flip];
-                [value setOn:NO animated:YES];
-                value.enabled = NO;
-            }
-            for (UISwitch *flip in allDimBSwitches) {
-                UISwitch *value = [allDimBSwitches objectForKey:flip];
-                [value setOn:NO animated:YES];
-                value.enabled = NO;
-            }
-            for (UISwitch *flip in allDimCSwitches) {
-                UISwitch *value = [allDimCSwitches objectForKey:flip];
-                [value setOn:NO animated:YES];
-                value.enabled = NO;
-            }
-            
-            self.activityNotes.text = nil;
-            [self.startingGoalSwitch setOn:NO animated:YES];
-            [self.endingGoalSwitch setOn:NO animated:YES];
-
-        
-        }else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"You Must Make at Least 1 Selection in Dimension A" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        if (!activitiesMDict[checkKey]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"You Must Make a Selection in the Instructional Events Category" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
             [alert show];
+        }else{
+            NSString *checkKey = [NSString stringWithFormat:@"DimB %02d", activityStartCount];
+            if (!activitiesMDict[checkKey]) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"You Must Make a Selection in the Grouping Category" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                [alert show];
+            }else{
+
+                [aTimer invalidate];
+                aTimer = nil;
+                [endObservationButton setImage:[UIImage imageNamed:@"endObsActive.png"] forState:UIControlStateNormal];
+                
+                NSDate *activityStop = [NSDate date];
+                NSString *notesKey = [NSString stringWithFormat:@"%02d Activity Notes",activityStartCount];
+                
+                NSString *startingGoalStatedKey = [NSString stringWithFormat:@"%02d Starting Goal Stated",activityStartCount];
+                NSString *startingGoalWrittenKey = [NSString stringWithFormat:@"%02d Starting Goal Written",activityStartCount];
+                NSString *startingGoalStatedString = [NSString stringWithFormat:@"%hhd",startingGoalStated.isSelected];
+                NSString *startingGoalWrittenString = [NSString stringWithFormat:@"%hhd",startingGoalWritten.isSelected];
+                
+                NSString *endingGoalStatedKey = [NSString stringWithFormat:@"%02d Ending Goal Stated",activityStartCount];
+                NSString *endingGoalWrittenKey = [NSString stringWithFormat:@"%02d Ending Goal Written",activityStartCount];
+                NSString *endingGoalStatedString = [NSString stringWithFormat:@"%hhd",endingGoalStated.isSelected];
+                NSString *endingGoalWrittenString = [NSString stringWithFormat:@"%hhd",endingGoalWritten.isSelected];
+                
+                                
+                [eventsMArray addObject:activityStop];
+                [activityNotesMDict setObject:self.activityNotes.text forKey:notesKey];
+                [activityNotesMDict setObject:startingGoalStatedString forKey:startingGoalStatedKey];
+                [activityNotesMDict setObject:startingGoalWrittenString forKey:startingGoalWrittenKey];
+                [activityNotesMDict setObject:endingGoalStatedString forKey:endingGoalStatedKey];
+                [activityNotesMDict setObject:endingGoalWrittenString forKey:endingGoalWrittenKey];
+                
+                for (UIButton *x in allDimASwitches) {
+                    [x setSelected:NO];
+                }
+                for (UIButton *x in allDimBSwitches) {
+                    [x setSelected:NO];
+                }
+                for (UIButton *x in allDimCSwitches) {
+                    [x setSelected:NO];
+                }
+                
+                self.activityNotes.text = nil;
+                startingGoalStated.selected = NO;
+                startingGoalWritten.selected = NO;
+                endingGoalStated.selected = NO;
+                endingGoalWritten.selected = NO;
+                
+                [self.transitioningTimerSeconds setText:@""];
+                [self.transitioningTimerMinutes setText:@""];
+                [self.transitioningTimerHours setText:@""];
+                [self.transitioning setText:@"Activity Saved"];
+                labelTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(hideLabel:) userInfo:nil repeats:NO];
+            }
+        }
     }
+    activityStartCount = activityStartCount + 1;
+}
+
+- (void) startTimer {
+    [self.transitioningTimerSeconds setFont: [UIFont systemFontOfSize:45]];
+    aTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerCountSeconds:) userInfo:nil repeats:YES];
+    [self.transitioningTimerMinutes setText:@"00"];
+    [self.transitioningTimerHours setText:@"00:"];
+    [self.transitioning setText:@""];
+    if (activityStartCount == 0){
+        [self.transitioningTimerSeconds setText:@"00"];
+    }else {
+        [self.transitioningTimerSeconds setText:@"03"];
+
+    }
+
+}
+
+- (IBAction)addObservationObject:(id)sender {
+    if (activityStartCount > 0) {
+        int dimASelected = 0;
+        for (UIButton *x in allDimASwitches) {
+            if ([x isSelected]) {
+                dimASelected++;
+            }
+        }
+        int dimBSelected = 0;
+        for (UIButton *x in allDimBSwitches) {
+            if ([x isSelected]) {
+                dimBSelected++;
+            }
+        }
+        if (dimASelected > 0 || dimASelected > 0) {
+            [self newActivity:sender];
+        }else{
+            //concatenated string for key for object
+            combinedName = [[NSMutableString alloc] init];
+            [combinedName appendString:self.passingDistrict];
+            [combinedName appendString:@"."];
+            [combinedName appendString:self.passingSchool];
+            [combinedName appendString:@"."];
+            [combinedName appendString:self.passingTeacher];
+            [combinedName appendString:@"."];
+            NSDate *todaysDate = [NSDate date];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy MMMM dd 'at' HH:mm zzz"];
+            NSString *stringFromDate = [formatter stringFromDate:todaysDate];
+            [combinedName appendString:stringFromDate];
+            
+            //Creating the currentObservation Object and adding it to a mutable dictionary of Observations.
+            currentObservation.observationDate = todaysDate;
+            currentObservation.events = eventsMArray;
+            currentObservation.activities = activitiesMDict;
+            currentObservation.activityNotes = activityNotesMDict;
+            currentObservation.numStudents = self.passingNumStudents;
+            currentObservation.observerName = self.passingObserverName;
+
+            
+            //add it to Mdict
+            self.passingObservations[combinedName] = currentObservation;
+            //archive to plist
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            NSString *fileName = [documentsDirectory stringByAppendingPathComponent: @"observations.plist"];
+            [NSKeyedArchiver archiveRootObject:self.passingObservations toFile:fileName];
+            [self preliminarySummary];
+        }
     }else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"I'm sorry, the timer isn't running yet." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"You must have at least 1 activity to save" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [alert show];
     }
-}
-- (IBAction)addObservationObject:(id)sender {
-    if (activityStartCount > 0 && !aTimer) {
-        
-        //concatenated string for key for object
-        combinedName = [[NSMutableString alloc] init];
-        [combinedName appendString:self.passingDistrict];
-        [combinedName appendString:@"."];
-        [combinedName appendString:self.passingSchool];
-        [combinedName appendString:@"."];
-        [combinedName appendString:self.passingTeacher];
-        [combinedName appendString:@"."];
-        NSDate *todaysDate = [NSDate date];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy MMMM dd 'at' HH:mm zzz"];
-        NSString *stringFromDate = [formatter stringFromDate:todaysDate];
-        [combinedName appendString:stringFromDate];
-        
-        //Creating the currentObservation Object and adding it to a mutable dictionary of Observations.
-        currentObservation.observationDate = todaysDate;
-        currentObservation.events = eventsMArray;
-        currentObservation.activities = activitiesMDict;
-        currentObservation.activityNotes = activityNotesMDict;
-        currentObservation.numStudents = self.passingNumStudents;
-        currentObservation.observerName = self.passingObserverName;
-
-        
-        //add it to Mdict
-        self.passingObservations[combinedName] = currentObservation;
-        //archive to plist
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *fileName = [documentsDirectory stringByAppendingPathComponent: @"observations.plist"];
-        [NSKeyedArchiver archiveRootObject:self.passingObservations toFile:fileName];
-        [self preliminarySummary];
-        }else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert!" message:@"You must have an activity to save or stop the current event to save." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-            [alert show];
-        }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -300,74 +592,79 @@
     
     activityStartCount = 0;
 
-    allDimASwitches = [[NSMutableDictionary alloc] init];
-    allDimBSwitches = [[NSMutableDictionary alloc] init];
-    allDimCSwitches = [[NSMutableDictionary alloc] init];
-    allOtherSwitches = [[NSMutableDictionary alloc] init];
+    allDimASwitches = [[NSMutableArray alloc] init];
+    allDimBSwitches = [[NSMutableArray alloc] init];
+    allDimCSwitches = [[NSMutableArray alloc] init];
     
-    [allOtherSwitches setObject:self.startingGoalSwitch forKey:@"startGoal"];
-    [allOtherSwitches setObject:self.endingGoalSwitch forKey:@"endGoal"];
-    [allOtherSwitches setObject:self.endingGoalMode forKey:@"endGoalMode"];
-    [allOtherSwitches setObject:self.startingGoalMode forKey:@"startingGoalMode"];
+    allDimATitles = [[NSArray alloc] initWithObjects:@"Concepts of Print",@"Phonological Awareness",@"Alphabetic Knowledge", @"Word Study/Phonics/Decoding", @"Spelling", @"Vocabulary", @"Fluency", @"Text Reading", @"Comprehension", @"Writing", @"Non Language Arts Activities", @"Transition", nil];
+    allDimBTitles = [[NSArray alloc] initWithObjects:@"Whole Class",@"Small Group",@"Pairing",@"Independent",@"Individualized",@"Other: (describe in notes)",nil];
+    allDimCTitles = [[NSArray alloc] initWithObjects:@"Audio-Tapes, CDs, etc.",@"Big Book (or similar)",@"Computers/iPads",@"Games, Puzzles, or Songs",@"Manipulatives",@"Oral Language",@"Pencil and Paper",@"Poster/Bulletin Board",@"Text-Basal",@"Text Decodable",@"Text-Pattern",@"Text-Student or Teacher Made",@"Text-Trade Book",@"Text-Unknown",@"Visuals-with Print",@"Visuals-without Print",@"Whiteboard, SmartBoard, etc.",@"Word Wall",@"Words out of Context",@"Workbooks/Worksheets",@"Other: (describe in notes)", nil];
+
     
-    [allDimASwitches setObject:dimA1 forKey:self.dimA1Value.text];
-    [allDimASwitches setObject:dimA2 forKey:self.dimA2Value.text];
-    [allDimASwitches setObject:dimA3 forKey:self.dimA3Value.text];
-    [allDimASwitches setObject:dimA4 forKey:self.dimA4Value.text];
-    [allDimASwitches setObject:dimA5 forKey:self.dimA5Value.text];
-    [allDimASwitches setObject:dimA6 forKey:self.dimA6Value.text];
-    [allDimASwitches setObject:dimA7 forKey:self.dimA7Value.text];
-    [allDimASwitches setObject:dimA8 forKey:self.dimA8Value.text];
-    [allDimASwitches setObject:dimA9 forKey:self.dimA9Value.text];
-    [allDimASwitches setObject:dimA10 forKey:self.dimA10Value.text];
-    [allDimASwitches setObject:dimA11 forKey:self.dimA11Value.text];
-    [allDimASwitches setObject:dimA12 forKey:self.dimA12Value.text];
+    [allDimASwitches addObject:dimA1];
+    [allDimASwitches addObject:dimA2];
+    [allDimASwitches addObject:dimA3];
+    [allDimASwitches addObject:dimA4];
+    [allDimASwitches addObject:dimA5];
+    [allDimASwitches addObject:dimA6];
+    [allDimASwitches addObject:dimA7];
+    [allDimASwitches addObject:dimA8];
+    [allDimASwitches addObject:dimA9];
+    [allDimASwitches addObject:dimA10];
+    [allDimASwitches addObject:dimA11];
+    [allDimASwitches addObject:dimA12];
     
-    [allDimBSwitches setObject:dimB1 forKey:self.dimB1Value.text];
-    [allDimBSwitches setObject:dimB2 forKey:self.dimB2Value.text];
-    [allDimBSwitches setObject:dimB3 forKey:self.dimB3Value.text];
-    [allDimBSwitches setObject:dimB4 forKey:self.dimB4Value.text];
-    [allDimBSwitches setObject:dimB5 forKey:self.dimB5Value.text];
-    [allDimBSwitches setObject:dimB6 forKey:self.dimB6OtherValue.text];
+    [allDimBSwitches addObject:dimB1];
+    [allDimBSwitches addObject:dimB2];
+    [allDimBSwitches addObject:dimB3];
+    [allDimBSwitches addObject:dimB4];
+    [allDimBSwitches addObject:dimB5];
+    [allDimBSwitches addObject:dimB6];
     
-    [allDimCSwitches setObject:dimC1 forKey:self.dimC1V.text];
-    [allDimCSwitches setObject:dimC2 forKey:self.dimC2V.text];
-    [allDimCSwitches setObject:dimC3 forKey:self.dimC3V.text];
-    [allDimCSwitches setObject:dimC4 forKey:self.dimC4V.text];
-    [allDimCSwitches setObject:dimC5 forKey:self.dimC5V.text];
-    [allDimCSwitches setObject:dimC6 forKey:self.dimC6V.text];
-    [allDimCSwitches setObject:dimC7 forKey:self.dimC7V.text];
-    [allDimCSwitches setObject:dimC8 forKey:self.dimC8V.text];
-    [allDimCSwitches setObject:dimC9 forKey:self.dimC9V.text];
-    [allDimCSwitches setObject:dimC10 forKey:self.dimC10V.text];
-    [allDimCSwitches setObject:dimC11 forKey:self.dimC11V.text];
-    [allDimCSwitches setObject:dimC12 forKey:self.dimC12V.text];
-    [allDimCSwitches setObject:dimC13 forKey:self.dimC13V.text];
-    [allDimCSwitches setObject:dimC14 forKey:self.dimC14V.text];
-    [allDimCSwitches setObject:dimC15 forKey:self.dimC15V.text];
-    [allDimCSwitches setObject:dimC16 forKey:self.dimC16V.text];
-    [allDimCSwitches setObject:dimC17 forKey:self.dimC17V.text];
-    [allDimCSwitches setObject:dimC18 forKey:self.dimC18V.text];
-    [allDimCSwitches setObject:dimC19 forKey:self.dimC19V.text];
-    [allDimCSwitches setObject:dimC20 forKey:self.dimC20V.text];
-    [allDimCSwitches setObject:dimC21 forKey:self.dimC21OtherV.text];
+    [allDimCSwitches addObject:dimC1];
+    [allDimCSwitches addObject:dimC2];
+    [allDimCSwitches addObject:dimC3];
+    [allDimCSwitches addObject:dimC4];
+    [allDimCSwitches addObject:dimC5];
+    [allDimCSwitches addObject:dimC6];
+    [allDimCSwitches addObject:dimC7];
+    [allDimCSwitches addObject:dimC8];
+    [allDimCSwitches addObject:dimC9];
+    [allDimCSwitches addObject:dimC10];
+    [allDimCSwitches addObject:dimC11];
+    [allDimCSwitches addObject:dimC12];
+    [allDimCSwitches addObject:dimC13];
+    [allDimCSwitches addObject:dimC14];
+    [allDimCSwitches addObject:dimC15];
+    [allDimCSwitches addObject:dimC16];
+    [allDimCSwitches addObject:dimC17];
+    [allDimCSwitches addObject:dimC18];
+    [allDimCSwitches addObject:dimC19];
+    [allDimCSwitches addObject:dimC20];
+    [allDimCSwitches addObject:dimC21];
     
-    for (NSString *flip in allOtherSwitches) {
-        UISwitch *value = [allOtherSwitches objectForKey:flip];
-        value.enabled = NO;
+
+    for (UIButton *x in allDimASwitches) {
+        x.enabled = NO;
     }
-    for (NSString *flip in allDimASwitches) {
-        UISwitch *value = [allDimASwitches objectForKey:flip];
-        value.enabled = NO;
+    for (UIButton *x in allDimBSwitches) {
+        x.enabled = NO;
     }
-    for (UISwitch *flip in allDimBSwitches) {
-        UISwitch *value = [allDimBSwitches objectForKey:flip];
-        value.enabled = NO;
+    for (UIButton *x in allDimCSwitches) {
+        x.enabled = NO;
     }
-    for (UISwitch *flip in allDimCSwitches) {
-        UISwitch *value = [allDimCSwitches objectForKey:flip];
-        value.enabled = NO;
-    }
+    endObservationButton.enabled = NO;
+    startingGoalWritten.enabled = NO;
+    startingGoalStated.enabled = NO;
+    endingGoalWritten.enabled = NO;
+    endingGoalStated.enabled = NO;
+    [self.transitioningTimerSeconds setText:@""];
+    [self.transitioningTimerMinutes setText:@""];
+    [self.transitioningTimerHours setText:@""];
+    
+    [[self.activityNotes layer] setBorderColor:[[UIColor grayColor] CGColor]];
+    [[self.activityNotes layer] setBorderWidth:1];
+    [[self.activityNotes layer] setCornerRadius:10];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -384,10 +681,7 @@
 }
 
 -(void)hideLabel:(NSTimer *) labelTimer{
-        [self.transitioning setText:@""];
-        [self.transitioningTimerSeconds setText:@"00"];
-        [self.transitioningTimerMinutes setText:@"00"];
-        [self.transitioningTimerHours setText:@"00:"];
+    [self startTimer];
 }
 
 - (void) preliminarySummary {
@@ -449,19 +743,19 @@
     [self.view addSubview:self.transitioning];
     
     //add timer animation images to an array for animation
-    NSMutableArray *imgListArray = [NSMutableArray array];
-    for (int i=1; i <= 51; i++) {
-        NSString *strImgeName = [NSString stringWithFormat:@"tbg%03d.png", i];
-        UIImage *image = [UIImage imageNamed:strImgeName];
-        [imgListArray addObject:image];
-    }
-    for (int i=51; i > 0; i--) {
-        NSString *strImgeName = [NSString stringWithFormat:@"tbg%03d.png", i];
-        UIImage *image = [UIImage imageNamed:strImgeName];
-        [imgListArray addObject:image];
-    }
-    //set the image array inside a UIImageView object for animation
-    anim = [UIImage animatedImageWithImages:imgListArray duration:4];
+//    NSMutableArray *imgListArray = [NSMutableArray array];
+//    for (int i=1; i <= 51; i++) {
+//        NSString *strImgeName = [NSString stringWithFormat:@"tbg%03d.png", i];
+//        UIImage *image = [UIImage imageNamed:strImgeName];
+//        [imgListArray addObject:image];
+//    }
+//    for (int i=51; i > 0; i--) {
+//        NSString *strImgeName = [NSString stringWithFormat:@"tbg%03d.png", i];
+//        UIImage *image = [UIImage imageNamed:strImgeName];
+//        [imgListArray addObject:image];
+//    }
+//    //set the image array inside a UIImageView object for animation
+//    anim = [UIImage animatedImageWithImages:imgListArray duration:4];
 
 
    
@@ -494,15 +788,6 @@
         evc.passingDistrict = self.passingDistrict;
         evc.passingSchool = self.passingSchool;
         evc.passingTeacher = self.passingTeacher;
-
-        
-    } if([[segue identifier] isEqualToString:@"observationPanelToAddNew"]){
-        AddNewViewController *avc = [segue destinationViewController];
-        // Pass the selected object to the new view controller.
-        avc.passingObservations = self.passingObservations;
-        avc.passingDistrict = self.passingDistrict;
-        avc.passingSchool = self.passingSchool;
-        avc.passingTeacher = self.passingTeacher;
     }
 }
 

@@ -8,18 +8,19 @@
 
 #import "ObservationReviewViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import <MessageUI/MessageUI.h>
 
 
 @interface ObservationReviewViewController () {
     
     NSMutableDictionary *events;
-    NSMutableDictionary *eventGaps;
     NSMutableDictionary *imgDictPDF;
     NSMutableArray *flowEventTips;
     NSMutableArray *flowEventsBases;
     NSMutableArray *flowTitles;
     NSMutableArray *dimCountedArray;
     NSArray *allDimFields;
+    NSArray *allDimFieldsCounted;
     NSArray *customTickLocations;
     NSMutableDictionary *dimValues;
     NSMutableDictionary *dimTitles;
@@ -53,7 +54,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *selectedSliceLabel;
 @property (strong, nonatomic) IBOutlet UILabel *selectedSliceLabelActivity;
 @property  (nonatomic) IBOutlet UISegmentedControl *dimSwitcherControl;
-@property (weak, nonatomic) IBOutlet UISwitch *observerGapSwitch;
 @property (strong, nonatomic) IBOutlet CPTGraphHostingView *corePlotHostingView;
 @property (weak, nonatomic) IBOutlet UISwitch *flowViewSwitch;
 @property (weak, nonatomic) IBOutlet UIView *postReviewView;
@@ -146,9 +146,6 @@
 }
 
 //all they do is call [self refresh data];
-- (IBAction)observerGapSwitch:(id)sender {
-    [self refreshData];
-}
 - (IBAction)flowViewSwitcher:(id)sender {
     [self refreshData];
 }
@@ -222,12 +219,11 @@
     
     thisObservation = self.passingObservations[self.passingObservation];
     events = [[NSMutableDictionary alloc] init];
-    eventGaps = [[NSMutableDictionary alloc] init];
     imgDictPDF = [[NSMutableDictionary alloc]init];
     count = 1;
     upsizer = 1.5;
-    for (int x = 0; x <= thisObservation.events.count - 1; x++){
-        if (x % 2 == 0) {
+    for (int x = 0; x < thisObservation.events.count; x++){
+        if (x == 0) {
             start = thisObservation.events[x];
         }else{
             end = thisObservation.events[x];
@@ -237,8 +233,7 @@
             double lessonSpanMinutes = lessonSpan / 60;
             int rounded = lroundf(lessonSpanMinutes);
             [events setObject:[NSNumber numberWithDouble:rounded] forKey:key];
-            start = nil;
-            end = nil;
+            start = end;
             count++;
         }
     }
@@ -246,27 +241,10 @@
     self.postReviewView.layer.borderColor = [UIColor grayColor].CGColor;
     self.postReviewView.layer.borderWidth = 1.0f;
     
-    for (int i = 1; i <= thisObservation.events.count - 1; i++) {
-        NSString *key = [NSString stringWithFormat:@"%02d",i/2];
-        if (i % 2 == 0) {
-            start = thisObservation.events[i];
-            NSTimeInterval gap = [start timeIntervalSinceDate:end];
-            double gapMinutes = gap / 60;
-            [eventGaps setObject:[NSNumber numberWithDouble:gapMinutes] forKey:key];
-            start = nil;
-            end = nil;
-        }else{
-            end = thisObservation.events[i];
-        }
-    }
-    
     NSDate *lastEvent = [thisObservation.events lastObject];
     NSDate *firstEvent = [thisObservation.events firstObject];
     totalClassLength = [lastEvent timeIntervalSinceDate:firstEvent];
     totalClassLength = totalClassLength / 60;
-    
-    NSLog(@"events: %@",events);
-    NSLog(@"eventGaps: %@",eventGaps);
     
     //Prevents the segmented control segments for Dimension B and C from being enabled if there are no selections in the observation for B/C
     for (NSString *x in thisObservation.activities) {
@@ -341,7 +319,7 @@
     //get length for each activity.
     dimValues = [[NSMutableDictionary alloc] init];
     dimTitles = [[NSMutableDictionary alloc] init];
-    allDimFields = [[NSArray alloc] initWithObjects:@"1. Concepts of Print",@"2. Phonological Awareness",@"3. Alphabetic Knowledge", @"4. Word Study/Phonics/Decoding", @"5. Spelling", @"6. Vocabulary", @"7. Fluency", @"8. Text Reading", @"9. Comprehension", @"10. Writing", @"11. Non Language Arts Activities", @"12. Transition", nil];
+    allDimFields = [[NSArray alloc] initWithObjects:@"Concepts of Print",@"Phonological Awareness",@"Alphabetic Knowledge", @"Word Study/Phonics/Decoding", @"Spelling", @"Vocabulary", @"Fluency", @"Text Reading", @"Comprehension", @"Writing", @"Non Language Arts Activities", @"Transition", nil];
     customTickLocations = [NSArray arrayWithObjects:[NSDecimalNumber numberWithInt:1], [NSDecimalNumber numberWithInt:2], [NSDecimalNumber numberWithInt:3], [NSDecimalNumber numberWithInt:4], [NSDecimalNumber numberWithInt:5], [NSDecimalNumber numberWithInt:6], [NSDecimalNumber numberWithInt:7], [NSDecimalNumber numberWithInt:8], [NSDecimalNumber numberWithInt:9], [NSDecimalNumber numberWithInt:10], [NSDecimalNumber numberWithInt:11],[NSDecimalNumber numberWithInt:12], nil];
     //get title of each Dim A selected during observation and put it in activityDimAValueArray Chronologically.
     for (NSString *x in events) {
@@ -365,11 +343,6 @@
             }
         }
     }
-    if ([self.observerGapSwitch isOn]) {
-        NSArray *eventGapsArray = [NSArray arrayWithArray:[eventGaps allValues]];
-        NSNumber *sum = [eventGapsArray valueForKeyPath:@"@sum.self"];
-        [dimCombinedEvents setObject:sum forKey:@"Observer Gap"];
-    }
 
     dimCounted = [[NSMutableDictionary alloc] init];
     dimOrderedTitles = [[NSMutableArray alloc] init];
@@ -388,107 +361,103 @@
     int l = 0;
     for (NSMutableArray *dimAArray in [dimTitles allValues]) {
         for (NSString *dimA in dimAArray) {
-            if ([dimA isEqualToString:@"1. Concepts of Print"]) {
+            if ([dimA isEqualToString:@"Concepts of Print"]) {
                 a++;
             }
-            if ([dimA isEqualToString:@"2. Phonological Awareness"]) {
+            if ([dimA isEqualToString:@"Phonological Awareness"]) {
                 b++;
             }
-            if ([dimA isEqualToString:@"3. Alphabetic Knowledge"]) {
+            if ([dimA isEqualToString:@"Alphabetic Knowledge"]) {
                 c++;
             }
-            if ([dimA isEqualToString:@"4. Word Study/Phonics/Decoding"]) {
+            if ([dimA isEqualToString:@"Word Study/Phonics/Decoding"]) {
                 d++;
             }
-            if ([dimA isEqualToString:@"5. Spelling"]) {
+            if ([dimA isEqualToString:@"Spelling"]) {
                 e++;
             }
-            if ([dimA isEqualToString:@"6. Vocabulary"]) {
+            if ([dimA isEqualToString:@"Vocabulary"]) {
                 f++;
             }
-            if ([dimA isEqualToString:@"7. Fluency"]) {
+            if ([dimA isEqualToString:@"Fluency"]) {
                 g++;
             }
-            if ([dimA isEqualToString:@"8. Text Reading"]) {
+            if ([dimA isEqualToString:@"Text Reading"]) {
                 h++;
             }
-            if ([dimA isEqualToString:@"9. Comprehension"]) {
+            if ([dimA isEqualToString:@"Comprehension"]) {
                 i++;
             }
-            if ([dimA isEqualToString:@"10. Writing"]) {
+            if ([dimA isEqualToString:@"Writing"]) {
                 j++;
             }
-            if ([dimA isEqualToString:@"11. Non Language Arts Activities"]) {
+            if ([dimA isEqualToString:@"Non Language Arts Activities"]) {
                 k++;
             }
-            if ([dimA isEqualToString:@"12. Transition"]) {
+            if ([dimA isEqualToString:@"Transition"]) {
                 l++;
             }
         }
     }
     
     if (a > 0) {
-        NSString *title = [NSString stringWithFormat:@"1. Concepts of Print"];
+        NSString *title = [NSString stringWithFormat:@"Concepts of Print"];
         [dimCounted setObject:[NSNumber numberWithInt:a] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (b > 0) {
-        NSString *title = [NSString stringWithFormat:@"2. Phonological Awareness"];
+        NSString *title = [NSString stringWithFormat:@"Phonological Awareness"];
         [dimCounted setObject:[NSNumber numberWithInt:b] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (c > 0) {
-        NSString *title = [NSString stringWithFormat:@"3. Alphabetic Knowledge"];
+        NSString *title = [NSString stringWithFormat:@"Alphabetic Knowledge"];
         [dimCounted setObject:[NSNumber numberWithInt:c] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (d > 0) {
-        NSString *title = [NSString stringWithFormat:@"4. Word Study/Phonics/Decoding"];
+        NSString *title = [NSString stringWithFormat:@"Word Study/Phonics/Decoding"];
         [dimCounted setObject:[NSNumber numberWithInt:d] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (e > 0) {
-        NSString *title = [NSString stringWithFormat:@"5. Spelling"];
+        NSString *title = [NSString stringWithFormat:@"Spelling"];
         [dimCounted setObject:[NSNumber numberWithInt:e] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (f > 0) {
-        NSString *title = [NSString stringWithFormat:@"6. Vocabulary"];
+        NSString *title = [NSString stringWithFormat:@"Vocabulary"];
         [dimCounted setObject:[NSNumber numberWithInt:f] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (g > 0) {
-        NSString *title = [NSString stringWithFormat:@"7. Fluency"];
+        NSString *title = [NSString stringWithFormat:@"Fluency"];
         [dimCounted setObject:[NSNumber numberWithInt:g] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (h > 0) {
-        NSString *title = [NSString stringWithFormat:@"8. Text Reading"];
+        NSString *title = [NSString stringWithFormat:@"Text Reading"];
         [dimCounted setObject:[NSNumber numberWithInt:h] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (i > 0) {
-        NSString *title = [NSString stringWithFormat:@"9. Comprehension"];
+        NSString *title = [NSString stringWithFormat:@"Comprehension"];
         [dimCounted setObject:[NSNumber numberWithInt:i] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (j > 0) {
-        NSString *title = [NSString stringWithFormat:@"10. Writing"];
+        NSString *title = [NSString stringWithFormat:@"Writing"];
         [dimCounted setObject:[NSNumber numberWithInt:j] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (k > 0) {
-        NSString *title = [NSString stringWithFormat:@"11. Non Language Arts Activities"];
+        NSString *title = [NSString stringWithFormat:@"Non Language Arts Activities"];
         [dimCounted setObject:[NSNumber numberWithInt:k] forKey:title];
         [dimOrderedTitles addObject:title];
     }
     if (l > 0) {
-        NSString *title = [NSString stringWithFormat:@"12. Transition"];
+        NSString *title = [NSString stringWithFormat:@"Transition"];
         [dimCounted setObject:[NSNumber numberWithInt:l] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if ([self.observerGapSwitch isOn]) {
-        NSString *title = [NSString stringWithFormat:@"Observer Gap"];
         [dimOrderedTitles addObject:title];
     }
     
@@ -501,15 +470,12 @@
     
     [self flowViewData];
     [self averageEventTime];
-//    [self minEventTime];
-//    [self maxEventTime];
     [self scatterPlot];
     [self timePieCPT];
     [self activityPieCPT];
 
     [self.dimAActivityChart reloadData];
     [self.dimATimeChart reloadData];
-//    [NSTimer scheduledTimerWithTimeInterval:.75 target:self selector:@selector(getImages) userInfo:nil repeats:NO];
 }
 - (void) caseOne {
     self.selectedSliceLabel.text = nil;
@@ -543,11 +509,6 @@
                 [dimCombinedEvents setObject:dimValues[x] forKey:str];
             }
         }
-    }
-    if ([self.observerGapSwitch isOn]) {
-        NSArray *eventGapsArray = [NSArray arrayWithArray:[eventGaps allValues]];
-        NSNumber *sum = [eventGapsArray valueForKeyPath:@"@sum.self"];
-        [dimCombinedEvents setObject:sum forKey:@"Observer Gap"];
     }
 
     dimCounted = [[NSMutableDictionary alloc] init];
@@ -613,10 +574,6 @@
         [dimCounted setObject:[NSNumber numberWithInt:fB] forKey:title];
         [dimOrderedTitles addObject:title];
     }
-    if ([self.observerGapSwitch isOn]) {
-        NSString *title = [NSString stringWithFormat:@"Observer Gap"];
-        [dimOrderedTitles addObject:title];
-    }
     
     dimCountedArray = [[NSMutableArray alloc] init];
     for (NSString *x in allDimFields) {
@@ -627,14 +584,11 @@
     
     [self flowViewData];
     [self averageEventTime];
-//    [self minEventTime];
-//    [self maxEventTime];
     [self timePieCPT];
     [self activityPieCPT];
     [self scatterPlot];
     [self.dimAActivityChart reloadData];
     [self.dimATimeChart reloadData];
-//    [NSTimer scheduledTimerWithTimeInterval:.75 target:self selector:@selector(getImages) userInfo:nil repeats:NO];
 }
 - (void) caseTwo {
     self.selectedSliceLabel.text = nil;
@@ -642,7 +596,6 @@
     //get length for each activity.
     dimValues = [[NSMutableDictionary alloc] init];
     dimTitles = [[NSMutableDictionary alloc] init];
-    allDimFields = [[NSArray alloc] initWithObjects:@"Audio-Tapes, CDs, etc.",@"Big Book (or similar)",@"Computers/iPads",@"Games, Puzzles, or Songs",@"Manipulatives",@"Oral Language",@"Pencil and Paper",@"Poster/Bulletin Board",@"Text-Basal",@"Text Decodable",@"Text-Pattern",@"Text-Student or Teacher Made",@"Text-Trade Book",@"Text-Unknown",@"Visuals-with Print",@"Visuals-without Print",@"Whiteboard, SmartBoard, etc.",@"Word Wall",@"Words out of Context",@"Workbooks/Worksheets",@"Other: (describe in notes)", nil];
     customTickLocations = [NSArray arrayWithObjects:[NSDecimalNumber numberWithInt:1], [NSDecimalNumber numberWithInt:2], [NSDecimalNumber numberWithInt:3], [NSDecimalNumber numberWithInt:4], [NSDecimalNumber numberWithInt:5], [NSDecimalNumber numberWithInt:6],[NSDecimalNumber numberWithInt:7], [NSDecimalNumber numberWithInt:8], [NSDecimalNumber numberWithInt:9], [NSDecimalNumber numberWithInt:10], [NSDecimalNumber numberWithInt:11], [NSDecimalNumber numberWithInt:12],[NSDecimalNumber numberWithInt:13], [NSDecimalNumber numberWithInt:14], [NSDecimalNumber numberWithInt:15], [NSDecimalNumber numberWithInt:16], [NSDecimalNumber numberWithInt:17], [NSDecimalNumber numberWithInt:18],[NSDecimalNumber numberWithInt:19], [NSDecimalNumber numberWithInt:20], [NSDecimalNumber numberWithInt:21], nil];
     //get title of each Dim A selected during observation and put it in activityDimAValueArray Chronologically.
     for (NSString *x in events) {
@@ -666,236 +619,190 @@
             }
         }
     }
-    if ([self.observerGapSwitch isOn]) {
-        NSArray *eventGapsArray = [NSArray arrayWithArray:[eventGaps allValues]];
-        NSNumber *sum = [eventGapsArray valueForKeyPath:@"@sum.self"];
-        [dimCombinedEvents setObject:sum forKey:@"Observer Gap"];
-    }
     
     if (dimCombinedEvents.count > 9) {
         upsizer = 1.0f;
     }
     
     dimCounted = [[NSMutableDictionary alloc] init];
+    [dimCountedArray removeAllObjects];
     dimOrderedTitles = [[NSMutableArray alloc] init];
     count = 1;
-    int a = 0;
-    int b = 0;
-    int c = 0;
-    int d = 0;
-    int e = 0;
-    int f = 0;
-    int g = 0;
-    int h = 0;
-    int i = 0;
-    int j = 0;
-    int k = 0;
-    int l = 0;
-    int m = 0;
-    int n = 0;
-    int o = 0;
-    int p = 0;
-    int q = 0;
-    int r = 0;
-    int s = 0;
-    int t = 0;
-    int u = 0;
+    NSMutableString *a = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *b = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *c = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *d = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *e = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *f = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *g = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *h = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *i = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *j = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *k = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *l = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *m = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *n = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *o = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *p = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *q = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *r = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *s = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *t = [NSMutableString stringWithFormat:@"0"];
+    NSMutableString *u = [NSMutableString stringWithFormat:@"0"];
+    
+    allDimFields = [[NSArray alloc] initWithObjects:@"Audio-Tapes, CDs, etc.",@"Big Book (or similar)",@"Computers/iPads",@"Games, Puzzles, or Songs",@"Manipulatives",@"Oral Language",@"Pencil and Paper",@"Poster/Bulletin Board",@"Text-Basal",@"Text Decodable",@"Text-Pattern",@"Text-Student or Teacher Made",@"Text-Trade Book",@"Text-Unknown",@"Visuals-with Print",@"Visuals-without Print",@"Whiteboard, SmartBoard, etc.",@"Word Wall",@"Words out of Context",@"Workbooks/Worksheets",@"Other: (describe in notes)", nil];
+    
+    allDimFieldsCounted = [[NSArray alloc] initWithObjects:a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,nil];
     
     for (NSMutableArray *dimAArray in [dimTitles allValues]) {
         for (NSString *dimC in dimAArray) {
             if ([dimC isEqualToString:@"Audio-Tapes, CDs, etc."]) {
-                a++;
+                int x = [a intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [a setString:ts];
             }
             if ([dimC isEqualToString:@"Big Book (or similar)"]) {
-                b++;
+                int x = [b intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [b setString:ts];
             }
             if ([dimC isEqualToString:@"Computers/iPads"]) {
-                c++;
+                int x = [c intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [c setString:ts];
             }
             if ([dimC isEqualToString:@"Games, Puzzles, or Songs"]) {
-                d++;
+                int x = [d intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [d setString:ts];
             }
             if ([dimC isEqualToString:@"Manipulatives"]) {
-                e++;
+                int x = [e intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [e setString:ts];
             }
             if ([dimC isEqual:@"Oral Language"]) {
-                f++;
+                int x = [f intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [f setString:ts];
             }
             if ([dimC isEqual:@"Pencil and Paper"]) {
-                g++;
+                int x = [g intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [g setString:ts];
             }
             if ([dimC isEqual:@"Poster/Bulletin Board"]) {
-                h++;
+                int x = [h intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [h setString:ts];
             }
             if ([dimC isEqual:@"Text-Basal"]) {
-                i++;
+                int x = [i intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [i setString:ts];
             }
             if ([dimC isEqual:@"Text Decodable"]) {
-                j++;
+                int x = [j intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [j setString:ts];
             }
             if ([dimC isEqual:@"Text-Pattern"]) {
-                k++;
+                int x = [k intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [k setString:ts];
             }
             if ([dimC isEqual:@"Text-Student or Teacher Made"]) {
-                l++;
+                int x = [l intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [l setString:ts];
             }
             if ([dimC isEqual:@"Text-Trade Book"]) {
-                m++;
+                int x = [m intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [m setString:ts];
             }
             if ([dimC isEqual:@"Text-Unknown"]) {
-                n++;
+                int x = [n intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [n setString:ts];
             }
             if ([dimC isEqual:@"Visuals-with Print"]) {
-                o++;
+                int x = [o intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [o setString:ts];
             }
             if ([dimC isEqual:@"Visuals-without Print"]) {
-                p++;
+                int x = [p intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [p setString:ts];
             }
             if ([dimC isEqual:@"Whiteboard, SmartBoard, etc."]) {
-                q++;
+                int x = [q intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [q setString:ts];
             }
             if ([dimC isEqual:@"Word Wall"]) {
-                r++;
+                int x = [r intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [r setString:ts];
             }
             if ([dimC isEqual:@"Words out of Context"]) {
-                s++;
+                int x = [s intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [s setString:ts];
             }
             if ([dimC isEqual:@"Workbooks/Worksheets"]) {
-                t++;
+                int x = [t intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [t setString:ts];
             }
             if ([dimC isEqual:@"Other: (describe in notes)"]) {
-                u++;
+                int x = [u intValue];
+                x++;
+                NSString *ts = [NSString stringWithFormat:@"%i",x];
+                [u setString:ts];
             }
         }
     }
     
-    if (a > 0) {
-        NSString *title = [NSString stringWithFormat:@"Audio-Tapes, CDs, etc."];
-        [dimCounted setObject:[NSNumber numberWithInt:a] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (b > 0) {
-        NSString *title = [NSString stringWithFormat:@"Big Book (or similar)"];
-        [dimCounted setObject:[NSNumber numberWithInt:b] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (c > 0) {
-        NSString *title = [NSString stringWithFormat:@"Computers/iPads"];
-        [dimCounted setObject:[NSNumber numberWithInt:c] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (d > 0) {
-        NSString *title = [NSString stringWithFormat:@"Games, Puzzles, or Songs"];
-        [dimCounted setObject:[NSNumber numberWithInt:d] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (e > 0) {
-        NSString *title = [NSString stringWithFormat:@"Manipulatives"];
-        [dimCounted setObject:[NSNumber numberWithInt:e] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (f > 0) {
-        NSString *title = [NSString stringWithFormat:@"Oral Language"];
-        [dimCounted setObject:[NSNumber numberWithInt:f] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (g > 0) {
-        NSString *title = [NSString stringWithFormat:@"Pencil and Paper"];
-        [dimCounted setObject:[NSNumber numberWithInt:g] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (h > 0) {
-        NSString *title = [NSString stringWithFormat:@"Poster/Bulletin Board"];
-        [dimCounted setObject:[NSNumber numberWithInt:h] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (i > 0) {
-        NSString *title = [NSString stringWithFormat:@"Text-Basal"];
-        [dimCounted setObject:[NSNumber numberWithInt:i] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (j > 0) {
-        NSString *title = [NSString stringWithFormat:@"Text Decodable"];
-        [dimCounted setObject:[NSNumber numberWithInt:j] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (k > 0) {
-        NSString *title = [NSString stringWithFormat:@"Text-Pattern"];
-        [dimCounted setObject:[NSNumber numberWithInt:k] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (l > 0) {
-        NSString *title = [NSString stringWithFormat:@"Text-Student or Teacher Made"];
-        [dimCounted setObject:[NSNumber numberWithInt:l] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (m > 0) {
-        NSString *title = [NSString stringWithFormat:@"Text-Trade Book"];
-        [dimCounted setObject:[NSNumber numberWithInt:m] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (n > 0) {
-        NSString *title = [NSString stringWithFormat:@"Text-Unknown"];
-        [dimCounted setObject:[NSNumber numberWithInt:n] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (o > 0) {
-        NSString *title = [NSString stringWithFormat:@"Visuals-with Print"];
-        [dimCounted setObject:[NSNumber numberWithInt:o] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (p > 0) {
-        NSString *title = [NSString stringWithFormat:@"Visuals-without Print"];
-        [dimCounted setObject:[NSNumber numberWithInt:p] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (q > 0) {
-        NSString *title = [NSString stringWithFormat:@"Whiteboard, SmartBoard, etc."];
-        [dimCounted setObject:[NSNumber numberWithInt:q] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (r > 0) {
-        NSString *title = [NSString stringWithFormat:@"Word Wall"];
-        [dimCounted setObject:[NSNumber numberWithInt:r] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (s > 0) {
-        NSString *title = [NSString stringWithFormat:@"Words out of Context"];
-        [dimCounted setObject:[NSNumber numberWithInt:s] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (t > 0) {
-        NSString *title = [NSString stringWithFormat:@"Workbooks/Worksheets"];
-        [dimCounted setObject:[NSNumber numberWithInt:t] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if (u > 0) {
-        NSString *title = [NSString stringWithFormat:@"Other: (describe in notes)"];
-        [dimCounted setObject:[NSNumber numberWithInt:u] forKey:title];
-        [dimOrderedTitles addObject:title];
-    }
-    if ([self.observerGapSwitch isOn]) {
-        NSString *title = [NSString stringWithFormat:@"Observer Gap"];
-        [dimOrderedTitles addObject:title];
-    }
-    
-    dimCountedArray = [[NSMutableArray alloc] init];
-    for (NSString *x in allDimFields) {
-        if (dimCounted[x]) {
-            [dimCountedArray addObject:dimCounted[x]];
+    NSMutableDictionary *combined = [[NSMutableDictionary alloc] initWithObjects:allDimFieldsCounted forKeys:allDimFields];
+    for (NSString *x in combined) {
+        NSNumber *n = [[NSNumber alloc] init];
+        n = combined[x];
+        if (n.intValue > 0) {
+            [dimCountedArray addObject:n];
+            [dimOrderedTitles addObject:x];
         }
     }
+    dimCounted = [[NSMutableDictionary alloc] initWithObjects:dimCountedArray forKeys:dimOrderedTitles];
     
     [self flowViewData];
     [self averageEventTime];
-//    [self minEventTime];
-//    [self maxEventTime];
     [self timePieCPT];
     [self activityPieCPT];
     [self scatterPlot];
     [self.dimAActivityChart reloadData];
     [self.dimATimeChart reloadData];
-//    [NSTimer scheduledTimerWithTimeInterval:.75 target:self selector:@selector(getImages) userInfo:nil repeats:NO];
 }
 
 //Calculates average durations for the ScatterView Core Plot Graph
@@ -919,60 +826,7 @@
     [scatterAverage addObject:average];
 //    NSLog(@"Scatter Avg: %@",scatterAverage);
 }
-/* no more error bars
-- (void) minEventTime {
-    //dictionary containing average length of each activity. Includes EVERY field.
-    scatterMin = [[NSMutableArray alloc] init];
-    NSMutableDictionary *scatterMinTemp = [[NSMutableDictionary alloc]init];
-    for (NSArray *x in dimTitles) {
-        NSArray *arr = [NSArray arrayWithArray:dimTitles[x]];
-        for (NSString *key in arr) {
-            if (scatterMinTemp[key]) {
-                if ([dimValues[x] isLessThan:scatterMinTemp[key]]) {
-                    [scatterMinTemp setObject:dimValues[x] forKey:key];
-                }
-            }else{
-                [scatterMinTemp setObject:dimValues[x] forKey:key];
-            }
-        }
-    }
-    for (NSString *x in allDimFields) {
-        if (scatterMinTemp[x]) {
-            [scatterMin addObject:scatterMinTemp[x]];
-        }else {
-            NSNumber *num = [NSNumber numberWithInt:-1];
-            [scatterMin addObject: num];
-        }
-    }
-//    NSLog(@"Scatter Min: %@",scatterMin);
-}
-- (void) maxEventTime {
-    //dictionary containing average length of each activity. Includes EVERY field.
-    scatterMax = [[NSMutableArray alloc] init];
-    NSMutableDictionary *scatterMaxTemp = [[NSMutableDictionary alloc]init];
-    for (NSArray *x in dimTitles) {
-        NSArray *arr = [NSArray arrayWithArray:dimTitles[x]];
-        for (NSString *key in arr) {
-            if (scatterMaxTemp[key]) {
-                if ([dimValues[x] isGreaterThan:scatterMaxTemp[key]]) {
-                    [scatterMaxTemp setObject:dimValues[x] forKey:key];
-                }
-            }else{
-                [scatterMaxTemp setObject:dimValues[x] forKey:key];
-            }
-        }
-    }
-    for (NSString *x in allDimFields) {
-        if (scatterMaxTemp[x]) {
-            [scatterMax addObject:scatterMaxTemp[x]];
-        }else {
-            NSNumber *num = [NSNumber numberWithInt:-1];
-            [scatterMax addObject:num];
-        }
-    }
-//    NSLog(@"Scatter Max: %@",scatterMax);
-}
-*/
+
 
 //Creates data for the FlowView Core Plot Graph
 - (void) flowViewData {
@@ -993,9 +847,6 @@
         len = [NSNumber numberWithInt:totalLength];
         for (int x = 1; x <= dimTitlesArr.count; x++) {
             [flowEventTips addObject:len];
-        }
-        if (eventGaps[key]) {
-            totalLength = totalLength + [eventGaps[key] intValue];
         }
     }
     flowTitles = [[NSMutableArray alloc] init];
@@ -1372,53 +1223,6 @@
     }
 }
 
-/*
-//get screenshots for PDF Creation
-- (void) getImages {
-    //check if retina iPad or shitty iPad
-    if ([UIScreen mainScreen].scale == 2.0){
-        UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, [UIScreen mainScreen].scale);
-    }else {
-        UIGraphicsBeginImageContext(self.view.bounds.size);
-    }
-    
-    [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
-
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-
-    UIImage *lImg = [[UIImage alloc] init];
-    
-    if ([UIScreen mainScreen].scale == 2.0){
-        lImg = [self cropImage:image rect:CGRectMake(1124, 160, 320, 340)];
-    }else{
-        lImg = [self cropImage:image rect:CGRectMake(562, 80, 160, 170)];
-    }
-    
-    NSString *lKey = [[NSString alloc] init];
-    
-    switch ([self.dimSwitcherControl selectedSegmentIndex]) {
-        case 0:{
-            lKey = [NSString stringWithFormat:@"legendDimA"];
-            break;}
-        case 1:{
-            lKey = [NSString stringWithFormat:@"legendDimB"];
-            break;}
-        case 2:{
-            lKey = [NSString stringWithFormat:@"legendDimC"];
-            break;}
-        default:
-            break;
-        }
-    [imgDictPDF setValue:lImg forKeyPath:lKey];
-}
-- (UIImage *)cropImage:(UIImage *)image rect:(CGRect)cropRect {
-    CGImageRef refImage = CGImageCreateWithImageInRect([image CGImage], cropRect);
-    UIImage *img = [UIImage imageWithCGImage:refImage];
-    CGImageRelease(refImage);
-    return img;
-}
- */
 
 //draw PDF
 - (void)drawPDF {
@@ -1675,8 +1479,8 @@
     [mailComposer setSubject:@"Observation Review Data"];
     
     // Attach CSV to the email
-    
-    NSMutableData *myData =  [NSMutableData dataWithContentsOfFile:tempFileName];
+    NSString *tempFile = [NSTemporaryDirectory() stringByAppendingPathComponent:tempFileName];
+    NSMutableData *myData =  [NSMutableData dataWithContentsOfFile:tempFile];
     [mailComposer addAttachmentData:myData mimeType:@"text/csv" fileName:@"Observation Data.csv"];
     
     // Fill out the email body text
@@ -1711,41 +1515,62 @@
  
 - (void) MakeCSV {
     
-    NSNumber *countEvents = [NSNumber numberWithInt:thisObservation.events.count / 2];
-    
     tempFileName = [[NSProcessInfo processInfo] globallyUniqueString];
+    NSString *eventsTotal = [NSString stringWithFormat:@"%u",thisObservation.events.count -1];
     
-    NSMutableArray *outputArray = [[NSMutableArray alloc] initWithObjects: tempFileName, thisObservation.districtName, thisObservation.schoolName, thisObservation.teacherName, thisObservation.observationDate, thisObservation.prereviewRating, thisObservation.prereviewSummary, thisObservation.postreviewRating, thisObservation.postreviewSummary, countEvents, nil];
+    NSMutableArray *outputArray = [[NSMutableArray alloc] initWithObjects: tempFileName, thisObservation.districtName, thisObservation.schoolName, thisObservation.teacherName, thisObservation.observationDate, thisObservation.prereviewSummary, thisObservation.postreviewSummary, eventsTotal, thisObservation.numStudents, thisObservation.observerName, nil];
+    
+    NSMutableArray *headingsArray = [[NSMutableArray alloc] initWithObjects:@"Temporary File Identifier", @"School District", @"School", @"Teacher", @"Observation Date", @"PreReview Summary", @"PostReview Summary", @"Number of Instructional Events", @"Number of Students", @"Observer Name", nil];
+    
     
 //    thisObservation.observerName, thisObservation.numStudents,
     
     //enter data for individual events
-    for (int x = 1; x < countEvents.intValue; x++) {
-        NSString *key = [NSString stringWithFormat:@"%02d",x];
-        NSString *DimAKey = [NSString stringWithFormat:@"DimA %02d",x];
-        NSString *DimBKey = [NSString stringWithFormat:@"DimB %02d",x];
-        NSString *DimCKey = [NSString stringWithFormat:@"DimC %02d",x];
-        NSString *activityNotesKey = [NSString stringWithFormat:@"%02d Activity Notes",x];
-        NSString *startingGoalKey = [NSString stringWithFormat:@"%02d Starting Goal",x];
-        NSString *startingGoalModeKey = [NSString stringWithFormat:@"%02d Starting Goal Mode",x];
-        NSString *endingGoalKey = [NSString stringWithFormat:@"%02d Ending Goal",x];
-        NSString *endingGoalModeKey = [NSString stringWithFormat:@"%02d Ending Goal Mode",x];
+    for (int x = 0; x < thisObservation.events.count - 1; x++) {
+        NSString *key = [NSString stringWithFormat:@"%02d",x + 1];
+        NSString *DimAKey = [NSString stringWithFormat:@"DimA %02d",x + 1];
+        NSString *DimBKey = [NSString stringWithFormat:@"DimB %02d",x + 1];
+        NSString *DimCKey = [NSString stringWithFormat:@"DimC %02d",x + 1];
+        NSString *activityNotesKey = [NSString stringWithFormat:@"%02d Activity Notes",x + 1];
+        NSString *startingGoalWrittenKey = [NSString stringWithFormat:@"%02d Starting Goal Written",x + 1];
+        NSString *startingGoalStatedKey = [NSString stringWithFormat:@"%02d Starting Goal Stated",x + 1];
+        NSString *endingGoalWrittenKey = [NSString stringWithFormat:@"%02d Ending Goal Written",x + 1];
+        NSString *endingGoalStatedKey = [NSString stringWithFormat:@"%02d Ending Goal Stated",x + 1];
         [outputArray addObject:events[key]];
-        [outputArray addObject:eventGaps[key]];
+        NSString *eventLengthStr = [NSString stringWithFormat:@"%02d Activity Length",x + 1];
+        [headingsArray addObject:eventLengthStr];
         [outputArray addObject:thisObservation.activityNotes[activityNotesKey]];
-        [outputArray addObject:thisObservation.activityNotes[startingGoalKey]];
-        [outputArray addObject:thisObservation.activityNotes[startingGoalModeKey]];
-        [outputArray addObject:thisObservation.activityNotes[endingGoalKey]];
-        [outputArray addObject:thisObservation.activityNotes[endingGoalModeKey]];
+        NSString *activityNotesString = [NSString stringWithFormat:@"%@ Activity Notes",key];
+        [headingsArray addObject:activityNotesString];
+        [outputArray addObject:thisObservation.activityNotes[startingGoalWrittenKey]];
+        [headingsArray addObject:startingGoalWrittenKey];
+        [outputArray addObject:thisObservation.activityNotes[startingGoalStatedKey]];
+        [headingsArray addObject:startingGoalStatedKey];
+        [outputArray addObject:thisObservation.activityNotes[endingGoalWrittenKey]];
+        [headingsArray addObject:endingGoalWrittenKey];
+        [outputArray addObject:thisObservation.activityNotes[endingGoalStatedKey]];
+        [headingsArray addObject:endingGoalStatedKey];
         NSArray *dimA = thisObservation.activities[DimAKey];
         [outputArray addObject:dimA[0]];
+        
+        NSString *headingA = [NSString stringWithFormat:@"%02d Instructional Event", x + 1];
+        [headingsArray addObject:headingA];
+        
         NSArray *dimB = thisObservation.activities[DimBKey];
-        if (dimB[0]) {
-            [outputArray addObject:dimB[0]];
-        }else{
-            [outputArray addObject:@""];
-        }
+        NSString *headingB = [NSString stringWithFormat:@"%02d Grouping", x + 1];
+        [outputArray addObject:dimB[0]];
+        [headingsArray addObject:headingB];
+        
         NSArray *dimC = thisObservation.activities[DimCKey];
+        NSString *headingC1 = [NSString stringWithFormat:@"%02d Materials 1",x + 1];
+        NSString *headingC2 = [NSString stringWithFormat:@"%02d Materials 2",x + 1];
+        NSString *headingC3 = [NSString stringWithFormat:@"%02d Materials 3",x + 1];
+        NSString *headingC4 = [NSString stringWithFormat:@"%02d Materials 4",x + 1];
+        [headingsArray addObject:headingC1];
+        [headingsArray addObject:headingC2];
+        [headingsArray addObject:headingC3];
+        [headingsArray addObject:headingC4];
+        
         if (dimC) {
             int dimCCount = dimC.count;
             for (int c = 0; c <= 3; c++) {
@@ -1766,6 +1591,7 @@
     NSString *tempFile = [NSTemporaryDirectory() stringByAppendingPathComponent:tempFileName];
     NSOutputStream *output = [NSOutputStream outputStreamToFileAtPath:tempFile append:NO];
     CHCSVWriter *writer = [[CHCSVWriter alloc] initWithOutputStream:output encoding:NSUTF8StringEncoding delimiter:','];
+    [writer writeLineOfFields:headingsArray];
     [writer writeLineOfFields:outputArray];
     
     [self composerSheetCSV];
@@ -1792,27 +1618,15 @@
         labelString = [NSString stringWithFormat:@"%i%%", labelint];
     }else if (plot == timePieCPT) {
         //time chart labels
-        if ([self.observerGapSwitch isOn]) {
-            NSMutableArray *filling = [[NSMutableArray alloc] init];
-            for (NSString *key in dimOrderedTitles) {
-                [filling addObject:dimCombinedEvents[key]];
-            }
-            [filling addObject:dimCombinedEvents[@"Observer Gap"]];
-            NSNumber *sum = [filling valueForKeyPath:@"@sum.self"];
-            float sliceValue = [filling[idx] floatValue];
-            int labelint = (sliceValue/ [sum floatValue]) * 100;
-            labelString = [NSString stringWithFormat:@"%i%%", labelint];
-        }else {
-            NSMutableArray *filling = [[NSMutableArray alloc] init];
-            for (NSString *key in dimOrderedTitles) {
-                [filling addObject:dimCombinedEvents[key]];
-            }
-            NSNumber *sum = [filling valueForKeyPath:@"@sum.self"];
-            float sliceValue = [filling[idx] floatValue];
-            int labelint = (sliceValue/ [sum floatValue]) * 100;
-            labelString = [NSString stringWithFormat:@"%i%%", labelint];
+        NSMutableArray *filling = [[NSMutableArray alloc] init];
+        for (NSString *key in dimOrderedTitles) {
+            [filling addObject:dimCombinedEvents[key]];
         }
-    }
+        NSNumber *sum = [filling valueForKeyPath:@"@sum.self"];
+        float sliceValue = [filling[idx] floatValue];
+        int labelint = (sliceValue/ [sum floatValue]) * 100;
+        labelString = [NSString stringWithFormat:@"%i%%", labelint];
+        }
     CPTTextLayer *label = [[CPTTextLayer alloc] initWithText:[NSString stringWithFormat:@"%@", labelString]];
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     textStyle.fontSize = 14.0f;
@@ -1829,11 +1643,7 @@
     }else if (plotnumberOfRecords == timePieCPT){
         return dimCombinedEvents.count;
     }else {
-        if ([self.observerGapSwitch isOn]) {
-            return  dimCombinedEvents.count - 1;
-        }else {
-            return dimCombinedEvents.count;
-        }
+        return dimCombinedEvents.count;
     }
 }
 - (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
@@ -1854,32 +1664,6 @@
             return [scatterAverage objectAtIndex:index];
         }
     }
-    /* Because someone didn't like the error bars
-    if (plot == rPlot){
-        if(fieldEnum == CPTRangePlotFieldX) {
-        // Return x value.
-        NSUInteger indexNew = index + 1;
-        NSNumber *newIndex = [NSNumber numberWithInteger:indexNew];
-        return newIndex;
-    } else if(fieldEnum == CPTRangePlotFieldY) {
-        // Return rest of values.
-        return [scatterAverage objectAtIndex:index];
-        
-    } else if(fieldEnum == CPTRangePlotFieldLow){
-        int a = [[scatterAverage objectAtIndex:index] intValue];
-        int b = [[scatterMin objectAtIndex:index] intValue];
-        NSNumber *num = [NSNumber numberWithInt:a - b];
-        return num;
-    }else if (fieldEnum == CPTRangePlotFieldHigh){
-        int a = [[scatterAverage objectAtIndex:index] intValue];
-        int b = [[scatterMax objectAtIndex:index] intValue];
-        NSNumber *num = [NSNumber numberWithInt:b - a];
-        return num;
-    }else{
-        return 0;
-    }
-    }
-     */
      else if (plot == flowPlot){
         NSNumber *num = [[NSNumber alloc] init];
         if (fieldEnum == CPTBarPlotFieldBarTip) {
@@ -1891,20 +1675,11 @@
         }
          return num;
      }else if (plot == timePieCPT){
-         if ([self.observerGapSwitch isOn]) {
-             NSMutableArray *filling = [[NSMutableArray alloc] init];
-             for (NSString *key in dimOrderedTitles) {
-                 [filling addObject:dimCombinedEvents[key]];
-             }
-             [filling addObject:dimCombinedEvents[@"Observer Gap"]];
-             return [filling objectAtIndex:index];
-         }else{
-             NSMutableArray *filling = [[NSMutableArray alloc] init];
-             for (NSString *key in dimOrderedTitles) {
-                 [filling addObject:dimCombinedEvents[key]];
-             }
-             return [filling objectAtIndex:index];
+         NSMutableArray *filling = [[NSMutableArray alloc] init];
+         for (NSString *key in dimOrderedTitles) {
+             [filling addObject:dimCombinedEvents[key]];
          }
+         return [filling objectAtIndex:index];
      }else{
         return [dimCountedArray objectAtIndex:index];
      }
@@ -1912,34 +1687,18 @@
 
 #pragma mark - XYPieChart Data Source Methods
 - (NSUInteger)numberOfSlicesInPieChart:(XYPieChart *)pieChart {
-    if ([self.observerGapSwitch isOn]) {
-        if (pieChart != self.dimAActivityChart) {
-            return dimCombinedEvents.count;
-        }else{
-            return dimCombinedEvents.count - 1;
-        }
-    }else{
         return dimCombinedEvents.count;
-    }
 }
+
 - (CGFloat)pieChart:(XYPieChart *)pieChart valueForSliceAtIndex:(NSUInteger)index {
     if (pieChart == self.dimAActivityChart) {
         return [[dimCountedArray objectAtIndex:index] intValue];
     }else{
-        if ([self.observerGapSwitch isOn]) {
-            NSMutableArray *filling = [[NSMutableArray alloc] init];
-            for (NSString *key in dimOrderedTitles) {
-                [filling addObject:dimCombinedEvents[key]];
-            }
-            [filling addObject:dimCombinedEvents[@"Observer Gap"]];
-            return [[filling objectAtIndex:index] intValue];
-        }else{
-            NSMutableArray *filling = [[NSMutableArray alloc] init];
-            for (NSString *key in dimOrderedTitles) {
-                [filling addObject:dimCombinedEvents[key]];
-            }
-            return [[filling objectAtIndex:index] intValue];
+        NSMutableArray *filling = [[NSMutableArray alloc] init];
+        for (NSString *key in dimOrderedTitles) {
+            [filling addObject:dimCombinedEvents[key]];
         }
+        return [[filling objectAtIndex:index] intValue];
     }
 }
 - (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index {
@@ -1970,7 +1729,12 @@
         if (pieChart == self.dimAActivityChart) {
             self.selectedSliceLabelActivity.text = [dimOrderedTitles objectAtIndex:index];
         }else {
-            self.selectedSliceLabel.text = [dimOrderedTitles objectAtIndex:index];
+            NSMutableArray *filling = [[NSMutableArray alloc] init];
+            for (NSString *key in dimOrderedTitles) {
+                [filling addObject:dimCombinedEvents[key]];
+            }
+            NSString *stringForSliceLabel = [NSString stringWithFormat:@"%@ Minutes",[filling objectAtIndex:index]];
+            self.selectedSliceLabel.text = stringForSliceLabel;
         }
     }
 
