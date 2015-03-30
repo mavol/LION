@@ -516,11 +516,6 @@
                                             <action selector="dimA8Touched:" destination="iaD-gt-ejd" eventType="touchUpInside" id="0Dg-ts-cmx"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grouping" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UIB-0P-Oip">
-                                        <rect key="frame" x="95" y="526" width="126" height="23"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Text-Pattern" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xyu-Hw-9EL">
                                         <rect key="frame" x="371" y="395" width="94" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -734,8 +729,8 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Materials" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5c-ZE-4mQ">
-                                        <rect key="frame" x="400" y="21" width="135" height="23"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Materials (select all)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5c-ZE-4mQ">
+                                        <rect key="frame" x="326" y="20" width="228" height="23"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -924,8 +919,8 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Instructional Events" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeW-Fw-D6G">
-                                        <rect key="frame" x="38" y="20" width="166" height="23"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Instructional Events (select one)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeW-Fw-D6G">
+                                        <rect key="frame" x="20" y="20" width="267" height="23"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1075,6 +1070,11 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Writing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fr-Ph-0yF">
                                         <rect key="frame" x="62" y="361" width="83" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grouping (select one)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UIB-0P-Oip">
+                                        <rect key="frame" x="20" y="528" width="196" height="23"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -1350,11 +1350,6 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Materials" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="scU-Qe-5cm">
-                                                <rect key="frame" x="366" y="21" width="135" height="23"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hoh-5H-j0L">
                                                 <rect key="frame" x="292" y="596" width="28" height="28"/>
                                                 <state key="normal" title="Button" image="buttonOff.png">
@@ -1580,8 +1575,8 @@
                                                     <action selector="dimA8Touched:" destination="ls7-95-igK" eventType="touchUpInside" id="kAn-Yq-F0z"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grouping" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IcE-Nf-Ho8">
-                                                <rect key="frame" x="95" y="526" width="126" height="23"/>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grouping (select one)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IcE-Nf-Ho8">
+                                                <rect key="frame" x="20" y="528" width="215" height="23"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -1751,8 +1746,8 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Instructional Events" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnm-2X-x7k">
-                                                <rect key="frame" x="38" y="20" width="166" height="23"/>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Instructional Events (select one)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnm-2X-x7k">
+                                                <rect key="frame" x="15" y="20" width="269" height="23"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -1823,6 +1818,11 @@
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Writing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x9B-RH-lU9">
                                                 <rect key="frame" x="62" y="361" width="83" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Materials (select all)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="scU-Qe-5cm">
+                                                <rect key="frame" x="300" y="20" width="209" height="23"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -2164,14 +2164,6 @@
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kMJ-tA-KtG">
                                 <rect key="frame" x="256" y="20" width="512" height="313"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="6" translatesAutoresizingMaskIntoConstraints="NO" id="1Hv-C9-alm">
-                                        <rect key="frame" x="174" y="274" width="224" height="31"/>
-                                    </slider>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Post Review Rating:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mgQ-ge-0wg">
-                                        <rect key="frame" x="8" y="278" width="150" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Post Review Summary:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Kl-jv-ASl">
                                         <rect key="frame" x="8" y="7" width="174" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -2207,7 +2199,6 @@
                         <outlet property="dimSwitcherControl" destination="mFf-EN-ofa" id="VGN-SH-qms"/>
                         <outlet property="flowViewSwitch" destination="7l5-wP-51E" id="3Jy-kS-kqj"/>
                         <outlet property="postReviewView" destination="kMJ-tA-KtG" id="8LY-xm-qg5"/>
-                        <outlet property="postreviewRating" destination="1Hv-C9-alm" id="boQ-95-HiQ"/>
                         <outlet property="postreviewSummary" destination="KXm-GV-RZA" id="XHm-aF-Qaj"/>
                         <outlet property="selectedSliceLabel" destination="22h-Us-SYS" id="cnw-7e-iL2"/>
                         <outlet property="selectedSliceLabelActivity" destination="Ord-cw-Y6E" id="a6a-O7-jEt"/>
@@ -2256,7 +2247,7 @@
         <segue reference="z2f-TB-b5O"/>
         <segue reference="Zz7-gD-SKJ"/>
         <segue reference="XTy-mD-wpF"/>
-        <segue reference="Mm0-o6-HWM"/>
         <segue reference="kKJ-K7-NFR"/>
+        <segue reference="axh-qV-fqO"/>
     </inferredMetricsTieBreakers>
 </document>

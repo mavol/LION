@@ -106,27 +106,21 @@
 
 - (IBAction)editSummaryAndRating:(id)sender {
 //    [self.view resignFirstResponder];
-    self.postreviewSummary.layer.borderWidth = 1.0f;
-    self.postreviewSummary.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    self.postreviewSummary.layer.cornerRadius = 5.0f;
-    self.postReviewView.layer.cornerRadius = 5.0f;
-    if (self.postreviewSummary.text) {
-        self.postreviewSummary.text = thisObservation.postreviewSummary;
-        self.postreviewRating.value = [thisObservation.postreviewRating floatValue];
-    }else{
+    [[self.postreviewSummary layer] setBorderColor:[[UIColor grayColor] CGColor]];
+    [[self.postreviewSummary layer] setBorderWidth:1];
+    [[self.postreviewSummary layer] setCornerRadius:10];
+    
+    [[self.postReviewView layer] setBorderColor:[[UIColor grayColor] CGColor]];
+    [[self.postReviewView layer] setBorderWidth:1];
+    [[self.postReviewView layer] setCornerRadius:10];
+    self.postReviewView.layer.masksToBounds = NO;
+    self.postReviewView.layer.shadowOffset = CGSizeMake(15, 20);
+    self.postReviewView.layer.shadowRadius = 5;
+    self.postReviewView.layer.shadowOpacity = 0.3;
+    self.postReviewView.hidden = NO;
+    if (!self.postreviewSummary.text) {
         self.postreviewSummary.text = thisObservation.prereviewSummary;
-        self.postreviewRating.value = [thisObservation.prereviewRating floatValue];
     }
-    [self.postReviewView setHidden:NO];
-//    [UIView animateWithDuration:0.5
-//                          delay:0.0
-//                        options: UIViewAnimationOptionCurveEaseOut
-//                     animations:^{
-//                         self.postReviewView.frame = CGRectMake(256, 20, 512, 313);
-//                     }
-//                     completion:^(BOOL finished){
-//                     }];
-//    [self.postreviewSummary becomeFirstResponder];
 }
 
 //slides the postreview summary text box back up out of view and saves the changes
